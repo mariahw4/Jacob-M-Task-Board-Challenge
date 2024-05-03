@@ -53,6 +53,7 @@ function renderTaskList() {
     $("#done-cards").empty();
 
     taskList.forEach(task => {
+        console.log('task.status', task.status)
         const taskCard = createTaskCard(task);
         $(`#${task.status}-cards`).append(taskCard);
     });
@@ -94,6 +95,9 @@ function handleAddTask(event){
         localStorage.setItem("tasks", JSON.stringify(taskList));
         renderTaskList();
         $("#formModal").modal("hide");
+        $("#taskTitleInput").val("")
+        $("#taskDateInput").val("")
+        $("#taskDescriptionInput").val("")
     }    
 }
 
