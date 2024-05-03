@@ -40,7 +40,8 @@ function createTaskCard(task) {
 
     // Check if the task is in "Done" status and apply white background
     if (task.status === "done") {
-        taskCard = $(taskCard).addClass("bg-light border-light");
+        taskCard = $(taskCard)
+            .addClass("bg-light border-dark text-dark")
     }
 
     return taskCard;
