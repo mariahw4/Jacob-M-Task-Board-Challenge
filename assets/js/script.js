@@ -11,7 +11,7 @@ function generateTaskId() {
 function createTaskCard(task) {
     let taskCard = `
         <div class="task-card card mb-3" id="${task.id}">
-            <div class="card-title strong">
+            <div class="card-title strong mt-2">
                 <h4><strong>${task.taskTitle}</strong></h4>
             </div>
             <div class="form-control hasDatePicker bg-transparent">
@@ -20,12 +20,13 @@ function createTaskCard(task) {
             <div class="card-body">
                 <p>${task.taskDescription}</p>
             </div>
-            <div class="align-items-center">
+            <div class="align-items-center mb-3">
                 <button class="btn col-4 .m-3 btn-danger delete-btn border-light">Delete</button>
             </div>
         </div>
     `;
 
+    //Alter Color Based on Due Date
     const dueDate = new Date(task.taskDate);
     const currentDate = new Date();
     const timeDiff = dueDate.getTime() - currentDate.getTime();
@@ -106,13 +107,15 @@ function handleDeleteTask(){
     });
 }
 
-// Create a function to handle dropping a task into a new status lane
+// Create a function to handle dragging and dropping a task into a new status lane
 function handleDrop(event, ui) {
     const draggedCard = ui.draggable;
     const changedLaneId = $(this).attr("id");
     const taskId = draggedCard.attr("id");
     const taskIndex = taskList.findIndex(task => task.id === taskId);
+    const newStatus = event.target.id;
 
+    //Test log to see if it recognizes lane or not
     console.log("Task dropped. Lane ID:", changedLaneId);
 
     if (taskIndex !== -1) {
@@ -136,8 +139,8 @@ $(document).ready(function () {
     handleDeleteTask();
 
     // Add event listeners for handling task drops into new status lanes
-    $("#todo-cards, #in-progress-cards, #done-cards").droppable({
-        accept: ".task-card",
+    $(".lane").droppable({
+        accept: ".draggable",
         drop: handleDrop
     });
 });
