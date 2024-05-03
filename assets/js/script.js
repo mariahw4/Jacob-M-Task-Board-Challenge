@@ -1,5 +1,5 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
+let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Create a function to generate a unique task id
@@ -10,7 +10,7 @@ function generateTaskId() {
 // Create a function to create a task card
 function createTaskCard(task) {
     let taskCard = `
-        <div class="task-card card mb-3" id="${task.id}">
+        <div class="task-card card mb-3 draggable" id="${task.id}">
             <div class="card-title strong mt-2">
                 <h4><strong>${task.taskTitle}</strong></h4>
             </div>
@@ -40,7 +40,8 @@ function createTaskCard(task) {
 
     // Check if the task is in "Done" status and apply white background
     if (task.status === "done") {
-        taskCard = $(taskCard).addClass("bg-light border-light");
+        taskCard = $(taskCard)
+            .addClass("bg-light border-dark text-dark")
     }
 
     return taskCard;
@@ -65,7 +66,7 @@ function renderTaskList() {
     });
 
     // Destroy existing draggable behavior and reapply it to reset snapping behavior
-    $(".lane .task-card").draggable({
+    $(".draggable").draggable({
         snap: true,
         snapMode: "inner",
         snapTolerance: 20,
@@ -116,7 +117,7 @@ function handleDrop(event, ui) {
     const newStatus = event.target.id;
 
     //Test log to see if it recognizes lane or not
-    console.log("Task dropped. Lane ID:", changedLaneId);
+    console.log("new Status", newStatus);
 
     if (taskIndex !== -1) {
         const currentStatus = taskList[taskIndex].status;
